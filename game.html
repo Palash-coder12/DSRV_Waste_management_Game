@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="google-site-verification" content="PD83IhB31wTacY4mK6duWgfp_yY7QSPZY3avkkw2hMw" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🗑️✨ Dr. Sarvepalli Radhakrishnan Vidyalaya - Waste Management Games</title>
@@ -159,7 +158,7 @@
         .bin.medical { background: linear-gradient(145deg, #ffb300, #ff8f00); color: #333; }
         .bin.ewaste { background: linear-gradient(145deg, #fb8c00, #ef6c00); }
 
-        /* ✨ FINAL DUSTBIN IDENTIFIER - NO SHORT TEXT */
+        /* ✨ UPGRADED DUSTBIN IDENTIFIER */
         .identifier-container {
             padding: 40px 20px; text-align: center; max-width: 800px; margin: 0 auto;
         }
@@ -205,7 +204,7 @@
         }
         @media (min-width: 901px) { .bin-body { width: 140px; height: 170px; font-size: 2em; } }
 
-        /* BIN COLORS - ONLY EMOJIS, NO TEXT */
+        /* BIN COLORS */
         .bin-blue .bin-lid { background: linear-gradient(145deg, #1e88e5, #1565c0); color: white; }
         .bin-blue .bin-body { background: linear-gradient(145deg, #42a5f5, #2196f3); color: white; }
         .bin-green .bin-lid { background: linear-gradient(145deg, #43a047, #2e7d32); color: white; }
@@ -285,7 +284,7 @@
             </div>
         </div>
 
-        <!-- ✨ 100% FINAL DUSTBIN IDENTIFIER -->
+        <!-- ✨ UPGRADED DUSTBIN IDENTIFIER -->
         <div id="identifierGame" class="game-container">
             <div class="game-header">
                 <div id="scoreIdentifier" class="score">Score: 0</div>
@@ -303,9 +302,9 @@
     <script>
         // GLOBAL STATE
         let scoreSorter = 0, selectedItem = null, currentLevel = 1, sorterItems = [];
-        let scoreIdentifier = 0, currentIdentifierQ = 0;
+        let scoreIdentifier = 0, shuffledQuestions = [], currentIdentifierQ = 0;
 
-        // LEVEL DATA
+        // LEVEL DATA (UNCHANGED)
         const levelWiseItems = {
             1: [{name: 'Banana Peel', type: 'wet', emoji: '🍌'}, {name: 'Newspaper', type: 'dry', emoji: '📰'}, {name: 'Tin Can', type: 'dry', emoji: '🥫'}, {name: 'AA Battery', type: 'hazardous', emoji: '🔋'}, {name: 'Syringe', type: 'medical', emoji: '💉'}, {name: 'Mobile Phone', type: 'ewaste', emoji: '📱'}, {name: 'Apple Core', type: 'wet', emoji: '🍎'}, {name: 'Paper', type: 'dry', emoji: '📄'}],
             2: [{name: 'Egg Shells', type: 'wet', emoji: '🥚'}, {name: 'Cardboard', type: 'dry', emoji: '📦'}, {name: 'Motor Oil', type: 'hazardous', emoji: '🛢️'}, {name: 'Bandage', type: 'medical', emoji: '🩹'}, {name: 'Charger', type: 'ewaste', emoji: '🔌'}, {name: 'Tea Bag', type: 'wet', emoji: '🫖'}, {name: 'Aluminum Foil', type: 'dry', emoji: '🥡'}, {name: 'Nail Paint', type: 'hazardous', emoji: '💅'}],
@@ -316,12 +315,20 @@
 
         const levelEmojis = ['🌱','📄','🥛','🌿','⚠️','🩹','🔌','🧹','🔬','👑'];
 
+        // ✨ 10 SHUFFLED QUESTIONS (5 ORIGINAL + 5 NEW)
         const identifierQuestions = [
             {question: 'Which dustbin for <strong>DRY waste</strong> like paper & plastic?', correct: 'blue', answer: '📰 BLUE (Dry Waste)'},
             {question: 'Which dustbin for <strong>WET waste</strong> like vegetable peels?', correct: 'green', answer: '🍌 GREEN (Wet Waste)'},
             {question: 'Which dustbin for <strong>HAZARDOUS waste</strong> like batteries?', correct: 'red', answer: '🔋 RED (Hazardous)'},
             {question: 'Which dustbin for <strong>MEDICAL waste</strong> like syringes?', correct: 'yellow', answer: '💉 YELLOW (Medical)'},
-            {question: 'Which dustbin for <strong>E-WASTE</strong> like mobile phones?', correct: 'orange', answer: '📱 ORANGE (E-Waste)'}
+            {question: 'Which dustbin for <strong>E-WASTE</strong> like mobile phones?', correct: 'orange', answer: '📱 ORANGE (E-Waste)'},
+            
+            // ✨ 5 NEW QUESTIONS
+            {question: 'Where to throw <strong>old newspapers</strong> & cardboard?', correct: 'blue', answer: '📰 BLUE (Dry Waste)'},
+            {question: 'Which bin for <strong>banana peels</strong> & food waste?', correct: 'green', answer: '🍌 GREEN (Wet Waste)'},
+            {question: 'Where do <strong>AA batteries</strong> & bulbs go?', correct: 'red', answer: '🔋 RED (Hazardous)'},
+            {question: 'Which dustbin for <strong>used syringes</strong> & bandages?', correct: 'yellow', answer: '💉 YELLOW (Medical)'},
+            {question: 'Where to put <strong>broken chargers</strong> & earphones?', correct: 'orange', answer: '📱 ORANGE (E-Waste)'}
         ];
 
         // DEVICE DETECTION
@@ -339,7 +346,7 @@
         detectDevice();
         window.addEventListener('resize', detectDevice);
 
-        // WASTE SORTER FUNCTIONS
+        // WASTE SORTER FUNCTIONS (UNCHANGED)
         function startSorter() {
             document.getElementById('homeScreen').style.display = 'none';
             document.getElementById('sorterGame').classList.add('show');
@@ -446,25 +453,30 @@
             }, 800);
         }
 
-        // ✨ 100% FINAL DUSTBIN IDENTIFIER - ONLY EMOJIS ON BINS
+        // ✨ UPGRADED DUSTBIN IDENTIFIER - SHUFFLED + 10 QUESTIONS
         function startIdentifier() {
             document.getElementById('homeScreen').style.display = 'none';
             document.getElementById('sorterGame').classList.remove('show');
             document.getElementById('identifierGame').classList.add('show');
             scoreIdentifier = 0;
             currentIdentifierQ = 0;
+            
+            // ✨ SHUFFLE QUESTIONS EVERY TIME GAME STARTS
+            shuffledQuestions = [...identifierQuestions].sort(() => Math.random() - 0.5);
+            
             document.getElementById('scoreIdentifier').textContent = 'Score: 0';
             nextIdentifierQuestion();
         }
 
         function nextIdentifierQuestion() {
-            const q = identifierQuestions[currentIdentifierQ];
+            const q = shuffledQuestions[currentIdentifierQ];
             document.getElementById('question').innerHTML = q.question;
             const optionsDiv = document.getElementById('identifierOptions');
             optionsDiv.innerHTML = '';
             
             const colors = ['blue', 'green', 'red', 'yellow', 'orange'];
-            colors.forEach((color) => {
+            // ✨ SHUFFLE BIN ORDER TOO
+            colors.sort(() => Math.random() - 0.5).forEach((color) => {
                 const wrapper = document.createElement('div');
                 wrapper.className = 'identifier-bin-wrapper';
                 
@@ -472,7 +484,6 @@
                 bin.className = `identifier-bin bin-${color}`;
                 bin.dataset.color = color;
                 
-                // ✅ ONLY EMOJI ON BODY, NO TEXT - ONLY COLOR ON LID
                 bin.innerHTML = `
                     <div class="bin-lid">${color.toUpperCase()}</div>
                     <div class="bin-body emoji">${color === 'blue' ? '📰' : color === 'green' ? '🍌' : color === 'red' ? '🔋' : color === 'yellow' ? '💉' : '📱'}</div>
@@ -483,10 +494,18 @@
                 optionsDiv.appendChild(wrapper);
             });
             document.getElementById('nextQuestion').style.display = 'none';
+            
+            // ✨ ENDLESS LOOP - RESTARTS AFTER 10 QUESTIONS
+            if (currentIdentifierQ >= 10) {
+                setTimeout(() => {
+                    alert(`🏆 DUSTBIN MASTER! 🎖️\nTotal Score: ${scoreIdentifier}\n🔄 Starting new round...`);
+                    startIdentifier();
+                }, 100);
+                return;
+            }
         }
 
         function selectIdentifierAnswer(selected, correct, answerText) {
-            // ✅ DISABLE ALL BINS AFTER FIRST CLICK
             document.querySelectorAll('.identifier-bin').forEach(bin => {
                 bin.classList.add('answered-all');
             });
@@ -494,7 +513,6 @@
             const clickedBin = document.querySelector(`[data-color="${selected}"]`);
             const correctBin = document.querySelector(`[data-color="${correct}"]`);
             
-            // ✅ SHOW FULL ANSWER AFTER SELECTION
             if (selected === correct) {
                 scoreIdentifier += 20;
                 document.getElementById('scoreIdentifier').textContent = `Score: ${scoreIdentifier}`;
@@ -520,7 +538,7 @@
             
             setTimeout(() => {
                 document.getElementById('nextQuestion').style.display = 'block';
-                currentIdentifierQ = (currentIdentifierQ + 1) % 5;
+                currentIdentifierQ++;
             }, 2500);
         }
 
@@ -532,4 +550,3 @@
     </script>
 </body>
 </html>
-
